@@ -23,5 +23,21 @@ pipeline {
                 unik push(imageName: 'messages-service-rump', unikHubEndpoint: hub(credentialsId: 'unik-hub'))
             }
         }
+        stage('Deploy') {
+            input {
+                message "Should release be deployed?"
+                ok "Yes"
+                parameters {
+                    string(name: 'INSTANCES', defaultValue: '1', description: 'How many instances?')
+                }
+            }
+            steps {
+                script{
+                    for(i = 0; i < ${params.instances}; i++) {
+                        unik run(imageName: 'message-service-rump', instanceName: 'message-service', envs: "STORAGE_ADDRESS=$STORAGE_ADDRESS LOAD_BALANCER=$LOAD_BALANCER PORT=700${i}")
+                    }
+                }       
+            }
+        }
     }
 }
