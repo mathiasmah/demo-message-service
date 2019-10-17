@@ -33,8 +33,8 @@ pipeline {
             }
             steps {
                 script{
-                    for(i = 0; i < ${params.instances}; i++) {
-                        unik run(imageName: 'message-service-rump', instanceName: 'message-service', envs: "STORAGE_ADDRESS=$STORAGE_ADDRESS LOAD_BALANCER=$LOAD_BALANCER PORT=700${i}")
+                    for(i = 0; i < ("${INSTANCES}" as Integer); i++) {
+                        unik run(imageName: 'message-service-rump', instanceName: "message-service-${i}", envs: "STORAGE_ADDRESS=$STORAGE_ADDRESS LOAD_BALANCER=$LOAD_BALANCER")
                     }
                 }       
             }
