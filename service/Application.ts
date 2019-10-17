@@ -58,7 +58,9 @@ export class Application {
 
     private static async registerLoadbalancer(loadBalancer: RestClient, port: number) {
         try {
-            await loadBalancer.get('/register/' + port);
+            console.log("Register with loadbalancer");
+            const response = await loadBalancer.get('/register/' + port);
+            console.log("Responsecode :" +response.statusCode+" Result: "+response.result)
         } catch (err) {
             console.error("Loadbalancer not available, coud not register. Error: " + err);
         }
@@ -66,6 +68,7 @@ export class Application {
 
     private static async unregisterLoadbalancer(loadBalancer: RestClient, port: number) {
         try {
+            console.log("Unregister from loadbalancer");
             await loadBalancer.del('/unregister/' + port);
         } catch (err) {
             console.error("Loadbalancer not available, coud not unregister. Error: " + err);
